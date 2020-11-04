@@ -12,13 +12,13 @@ ACC using LiDAR
 
 
 # Aufgabenpaket
-- [ ] Geeignetes System für R-Pi finden und installieren(ggf. ein ROS Linux).
-- [ ] LiDAR Sensor auf Hardware-Ebene ordentlich mit dem R-PI Verbinden.
-- [ ] LiDAR Sensor auf Software-Ebene mit dem R-PI Verbinden und die Register auslesen.
+- [ ] Geeignetes System für Cortex-A72 finden und installieren(ggf. ein ROS Linux oder rtos System).
+- [ ] LiDAR Sensor auf Hardware-Ebene ordentlich mit dem Cortex-A72 Verbinden.
+- [ ] LiDAR Sensor auf Software-Ebene mit dem Cortex-A72 Verbinden und die Register auslesen.
 - [ ] Aus den Registern des LiDAR einen Abstand berechnen.
 - [ ] Modelle für Abstands/Geschwindigkeits abschätzung entwickeln/finden.
 - [ ] Modelle als Simulation entwerfen.
 
 # Bis zum 11.11.2020
-- [ ] Linux für R-Pi ist gefgunden und installiert.
-- [ ] LiDAR Konnektivität zum R-PI ist hergestellt.
+- [ ] Linux für Cortex-A72 ist gefgunden und installiert.
+- [ ] LiDAR Konnektivität zum Cortex-A72 ist hergestellt.
