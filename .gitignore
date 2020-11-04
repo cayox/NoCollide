@@ -1,2 +1,5 @@
 # virtaul environment
 src/venv
+
+# vs code env
+.vscode
