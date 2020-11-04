@@ -36,7 +36,7 @@ class Sensor:
         
         status = self._bus.read_byte_data(self.addr, 0x01)
         while status & 0x01:
-            if datetime.now() - starttime < timedelta(milliseconds=500):
+            if datetime.now() - starttime > timedelta(milliseconds=500):
                 raise TimeoutError("Cannot initialize the Sensor; Sensor is always busy")
             status = self._bus.read_byte_data(self.addr, 0x01)
 
