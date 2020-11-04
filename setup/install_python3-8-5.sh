@@ -2,8 +2,9 @@
 wget https://www.python.org/ftp/python/3.8.5/Python-3.8.5.tgz
 # unpack it
 tar xf Python-3.8.5.tgz
-# install build libraries
+# install necessary libraries
 sudo apt install libssl-dev
+sudo apt install libffi-dev
 # delete tarball
 rm -r Python-3.8.5.tgz
 # move into python dir 
