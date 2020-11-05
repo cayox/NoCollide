@@ -9,19 +9,21 @@ class Sensor:
     :param i2c_bus: the bus number on which the sensor is running. Defaults to Bus 1
     :type i2c_bus: int
     """
+
     def __init__(self, i2c_bus: int = 1):
         self.addr = 0x62
         self.busnum = i2c_bus
         self._bus = SMBus(self.busnum)
-
-        # initialize the sensor so it is ready to use
-        self.initialize()
+        self.mode = 0
     
+
     def __str__(self):
         return f"Sensor on Bus {self.busnum}"
     
+
     def __repr__(self):
         return f"Sensor(i2c_bus={self.busnum})"
+
 
     def _sensor_ready(self, timeout: int = 200):
         """
@@ -36,41 +38,116 @@ class Sensor:
         
         status = self._bus.read_byte_data(self.addr, 0x01)
         while status & 0x01:
-            if datetime.now() - starttime > timedelta(milliseconds=500):
+            if datetime.now() - starttime > timedelta(milliseconds=timeout):
                 raise TimeoutError("Cannot initialize the Sensor; Sensor is always busy")
             status = self._bus.read_byte_data(self.addr, 0x01)
+    
+
+    def get_mode(self):
+        """
+        Method to retreive the measurement mode the sensor is configured
+
+        :returns: the mode number
+        :rtype: int
+        """
+        return self.mode
 
 
-    def initialize(self, rec_bias_correction: bool = True):
+    def configure(self, mode: int = 0):
         """
-        Method to initialize the sensor. Must be done before the sensor can be used
+        Method to initialize the sensor to different modi. Must be done before the sensor can be used
         
-        :param rec_bias_correction: wether the receiver bias correction should be enabled
-        :type rec_bias_correction: bool
+        configuration:  Default 0.
+            0: Default mode, balanced performance.
+            1: Short range, high speed. Uses 0x1d maximum acquisition count.
+            2: Default range, higher speed short range. Turns on quick termination
+                detection for faster measurements at short range (with decreased
+                accuracy)
+            3: Maximum range. Uses 0xff maximum acquisition count.
+            4: High sensitivity detection. Overrides default valid measurement detection
+                algorithm, and uses a threshold value for high sensitivity and noise.
+            5: Low sensitivity detection. Overrides default valid measurement detection
+                algorithm, and uses a threshold value for low sensitivity and noise.
+
+        :param mode: the selected mode
+        :type mode: int
         """
-        self._bus.write_byte_data(self.addr, 0x00, 0x04)
-        self._sensor_ready(500)
+
+        self.mode = mode if 0 <= mode <= 6 else 0
+
+        sig_count_max = 0x80
+        acq_conf_reg = 0x08
+        ref_count_max = 0x05
+        threshold_bypass = 0x00
+
+        if mode == 1:
+            # short range, high speed
+            sig_count_max = 0x1d
+            acq_conf_reg = 0x00
+            ref_count_max = 0x03
+            threshold_bypass = 0x00
+        elif mode == 2:
+            # default range, higher speed short range
+            sig_count_max = 0x80
+            acq_conf_reg = 0x00
+            ref_count_max = 0x03
+            threshold_bypass = 0x00
+        elif mode == 3:
+            # max range
+            sig_count_max = 0xff
+            acq_conf_reg = 0x08
+            ref_count_max = 0x05
+            threshold_bypass = 0x00
+        elif mode == 4:
+            # high sensitivity detection, high erroneous measurements
+            sig_count_max = 0x80
+            acq_conf_reg = 0x08
+            ref_count_max = 0x05
+            threshold_bypass = 0x80
+        elif mode == 5:
+            # Low sensitivity detection, low erroneous measurements
+            sig_count_max = 0x80
+            acq_conf_reg = 0x08
+            ref_count_max = 0x05
+            threshold_bypass = 0xb0
+        elif mode == 6:
+            # short range, high speed, higher error
+            sig_count_max = 0x04
+            acq_conf_reg = 0x01
+            ref_count_max = 0x03
+            threshold_bypass = 0x00
+
+
+        self._bus.write_byte_data(self.addr, 0x02, sig_count_max)
+        self._bus.write_byte_data(self.addr, 0x04, acq_conf_reg)
+        self._bus.write_byte_data(self.addr, 0x12, ref_count_max)
+        self._bus.write_byte_data(self.addr, 0x1c, threshold_bypass)
+
         
-    def measure(self, timeout: int = 200) -> int:
+    def measure(self, rec_bias_corr: bool = True):
+        """
+        Method to tell the sensor to take a measurement
+
+        :param rec_bias_corr: Wether the measurement should be taken with or without receiver bias correction; defaults to True
+        :type rec_bias_corr: bool
+        """
+        self._bus.write_byte_data(self.addr, 0x00, 0x04 if rec_bias_corr else 0x03)
+
+        
+    
+    def read_measurements(self) -> int:
         """
         Method to obtain the measured distance in cm
 
-        :param timeout: the max time in ms which should be waited until the sensor is ready
-        :type timeout: int
         :returns: the measured value in cm. Returns 0 if timeouted
         :rtype: int
         """
 
-        # wait until sensor is ready
-        try:
-            self._sensor_ready()
-        except TimeoutError:
-            return 0
-
         res = self._bus.read_byte_data(self.addr, 0x0f)
         res << 8
-        res += self._bus.read_byte_data(self.addr, 0x10)
+        res |= self._bus.read_byte_data(self.addr, 0x10)
         return res
+
 
     def close(self):
         """
@@ -81,12 +158,8 @@ class Sensor:
         
 if __name__ == "__main__":
     s = Sensor()
+    s.configure()
 
     while True:
-        print(s.measure())
-
-
-
-
-
-
+        s.measure()
+        print(s.read_measurements())
