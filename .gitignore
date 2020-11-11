@@ -3,3 +3,9 @@ src/venv
 
 # vs code env
 .vscode
+
+# doc build files
+docs/build/*
+
+# pycache
+src/__pycache__

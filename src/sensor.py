@@ -4,9 +4,9 @@ from datetime import datetime, timedelta
 
 class Sensor:
     """
-    The Class that handles the LiDAR Sensor
+    The Class that handles a LiDAR Sensor
 
-    :param i2c_bus: the bus number on which the sensor is running. Defaults to Bus 1
+    :param: i2c_bus: the bus number on which the sensor is running, defaults to Bus 1
     :type i2c_bus: int
     """
 
@@ -16,14 +16,18 @@ class Sensor:
         self._bus = SMBus(self.busnum)
         self.mode = 0
     
-
     def __str__(self):
         return f"Sensor on Bus {self.busnum}"
-    
 
     def __repr__(self):
         return f"Sensor(i2c_bus={self.busnum})"
 
+    def __enter__(self):
+        self.configure()
+        return self
+
+    def __exit__(self, type, value, traceback):
+        self.close()
 
     def _sensor_ready(self, timeout: int = 200):
         """
@@ -42,6 +46,27 @@ class Sensor:
                 raise TimeoutError("Cannot initialize the Sensor; Sensor is always busy")
             status = self._bus.read_byte_data(self.addr, 0x01)
     
+    def change_addr(self, new_addr: int):
+        """
+        Method to change the I2C Address of the sensor
+
+        :param new_addr: the new address that should be set
+        :type new_addr: int
+        """
+        # read high byte
+        id_high = self._bus.read_byte_data(self.addr, 0x16)
+        # read low byte
+        id_low = self._bus.read_byte_data(self.addr, 0x16)
+
+        # unlock address lock
+        self._bus.write_byte_data(self.addr, 0x18, id_high)
+        self._bus.write_byte_data(self.addr, 0x19, id_low)
+
+        # write new address to register
+        self._bus.write_byte_data(self.addr, 0x1a, new_addr)
+
+        # enable new adress using the default address
+        self._bus.write_byte_data(self.addr, 0x1e, 0)
 
     def get_mode(self):
         """
@@ -52,22 +77,22 @@ class Sensor:
         """
         return self.mode
 
-
     def configure(self, mode: int = 0):
         """
         Method to initialize the sensor to different modi. Must be done before the sensor can be used
         
-        configuration:  Default 0.
-            0: Default mode, balanced performance.
-            1: Short range, high speed. Uses 0x1d maximum acquisition count.
-            2: Default range, higher speed short range. Turns on quick termination
-                detection for faster measurements at short range (with decreased
-                accuracy)
-            3: Maximum range. Uses 0xff maximum acquisition count.
-            4: High sensitivity detection. Overrides default valid measurement detection
-                algorithm, and uses a threshold value for high sensitivity and noise.
-            5: Low sensitivity detection. Overrides default valid measurement detection
-                algorithm, and uses a threshold value for low sensitivity and noise.
+        **configuration:**  Default 0.
+
+        0. Default mode, balanced performance.
+        1. Short range, high speed. Uses 0x1d maximum acquisition count.
+        2. Default range, higher speed short range. Turns on quick termination
+           detection for faster measurements at short range (with decreased
+           accuracy)
+        3. Maximum range. Uses 0xff maximum acquisition count.
+        4. High sensitivity detection. Overrides default valid measurement detection
+           algorithm, and uses a threshold value for high sensitivity and noise.
+        5. Low sensitivity detection. Overrides default valid measurement detection
+           algorithm, and uses a threshold value for low sensitivity and noise.
 
         :param mode: the selected mode
         :type mode: int
@@ -122,7 +147,6 @@ class Sensor:
         self._bus.write_byte_data(self.addr, 0x04, acq_conf_reg)
         self._bus.write_byte_data(self.addr, 0x12, ref_count_max)
         self._bus.write_byte_data(self.addr, 0x1c, threshold_bypass)
-
         
     def measure(self, rec_bias_corr: bool = True):
         """
@@ -132,8 +156,6 @@ class Sensor:
         :type rec_bias_corr: bool
         """
         self._bus.write_byte_data(self.addr, 0x00, 0x04 if rec_bias_corr else 0x03)
-
-        
     
     def read_measurements(self) -> int:
         """
@@ -148,7 +170,6 @@ class Sensor:
         res |= self._bus.read_byte_data(self.addr, 0x10)
         return res
 
-
     def close(self):
         """
         Method to close the bus
@@ -157,9 +178,12 @@ class Sensor:
         
         
 if __name__ == "__main__":
-    s = Sensor()
-    s.configure()
+    import time    
 
-    while True:
-        s.measure()
-        print(s.read_measurements())
+    with Sensor() as s:
+        s.configure()
+
+        while True:
+            s.measure()
+            print(s.read_measurements())
+            time.sleep(0.1)
