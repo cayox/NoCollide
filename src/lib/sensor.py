@@ -1,101 +1,29 @@
-from smbus2 import SMBus
 from datetime import datetime, timedelta
 from typing import List, Union
+import queue
+from threading import Thread
+from abc import abstractmethod
+import time
+
+# from smbus2 import SMBus
+from .data import Data
 
 
-class SensorGroup:
-    """
-    Class to connect to multiple sensors at once.
+class AbstractSensor:
+    @abstractmethod
+    def measure(self, rec_bias_corr: bool = True):
+        pass
 
-    This class can be used in a context manager (``with`` statement).
-    It returns itself and then all :py:class:`Sensors <.Sensor>` which are being set (default: 3).
+    @abstractmethod
+    def read_measurements(self) -> int:
+        pass
 
-    **If not used in a** ``with`` **-Statement the bus must be closed manually using the** :py:meth:`close() <.SensorGroup.close>` **method**
-
-    .. code-block:: python
-
-        with SensorGroup(i2c_bus=1) as (group, *sensors):
-            ...
-
-    :param i2c_bus: the raspberry pi bus the sensors are running on
-    :type i2c_bus: int
-    :param sensor_names: a list of names, to identify the sensors. Defaults to ``["left", "center", "right"]`` if ``None``
-    :type sensor_names: Union[List[str], None]
-    :param init_mode: the mode the sensors should be initialised with. Defaults to mode 0. See :py:meth:`Sensor.configure() <.Sensor.configure>` method
-    :type init_mode: int
-    """
-
-    def __init__(self, i2c_bus: int, sensor_names: Union[List[str], None] = None, init_mode: int = 0):
-        self.bus = i2c_bus
-        self.mode = init_mode
-        self.sensor_names = sensor_names
-        
-        if sensor_names is None:
-            sensor_names = ["left", "center", "right"]
-
-        self._sensors = []
-
-        default_addr = 0x62
-        for addr, name in enumerate(sensor_names, default_addr):
-            sensor_name = f"sensor_{name}"
-            sensor = Sensor(i2c_bus=self.bus)
-            sensor.change_addr(addr)
-            sensor.configure(self.mode)
-            self._sensors.append(sensor)
-            self.__setattr__(sensor_name, sensor)
-
-    def __str__(self):
-        return f"{len(self.sensor_names)} Sensors on Bus {self.busnum}"
-
-    def __repr__(self):
-        return f"Sensor(i2c_bus={self.busnum}, {self.sensor_names}, init_mode={self.mode})"
-
-    def __enter__(self):
-        return (self, *self._sensors)
-
-    def __exit__(self, type, value, traceback):
-        self.close()
-
+    @abstractmethod
     def close(self):
-        """
-        Method do close and delete all sensors from the group. This method is also called when exiting the ``with``-Statement
-        """
-
-        for sensor, name in zip(self._sensors, self.sensor_names):
-            try:
-                sensor.close()
-            except OSError:
-                pass
-            self.__delattr__(name)
-        self.sensor_names = []
-        self._sensors = []
-
-    @property
-    def sensors(self):
-        return self._sensors
-
-    def set_mode(self, mode_num: int, sensors: List[str] = None):
-        """
-        Method to set the mode for specific or all Sensors in the group
-
-        :param mode_num: the mode number, referring to the mode if the :py:meth:`configure() <.Sensor.configure>` method of the :class:`.Sensor`
-        :param sensors: the sensornames of which the mode should be changed
-        :raises TypeError: TypeError when the is no such sensor in the group
-        """
-        if sensors is None or len(sensors) == 0:
-            sensors = self.sensor_names
-
-        for sensor_name in self._sensors:
-            if not hasattr(self, sensor_name):
-                raise TypeError(f"The SensorGroup does not have a Sensor called {sensor_name}")
-            sensor = self.__getattribute__(sensor_name)
-            if not isinstance(sensor, Sensor):
-                raise TypeError(f"The SensorGroup does not have a Sensor called {sensor_name}")
-
-            sensor.configure(mode_num)
+        pass
 
 
-class Sensor:
+class Sensor(AbstractSensor):
     """
     The Class that handles a LiDAR Sensor
 
@@ -103,11 +31,12 @@ class Sensor:
     :type i2c_bus: int
     """
 
-    def __init__(self, i2c_bus: int = 1):
+    def __init__(self, i2c_bus: int = 1, max_range: int = 50):
         self._addr = 0x62
         self.busnum = i2c_bus
-        self._bus = SMBus(self.busnum)
+        # self._bus = SMBus(self.busnum)
         self._mode = 0
+        self.max_range = max_range
     
     def __str__(self):
         return f"Sensor on Bus {self.busnum} with i2c address {self._addr}"
@@ -270,7 +199,148 @@ class Sensor:
         Method to close the bus
         """
         self._bus.close()
-        
+
+
+class SensorGroup:
+    """
+    Class to connect to multiple sensors at once.
+
+    This class can be used in a context manager (``with`` statement).
+    It returns itself and then all :py:class:`Sensors <.Sensor>` which are being set (default: 3).
+
+    **If not used in a** ``with`` **-Statement the bus must be closed manually using the** :py:meth:`close() <.SensorGroup.close>` **method**
+
+    .. code-block:: python
+
+        with SensorGroup(i2c_bus=1) as (group, *sensors):
+            ...
+
+    :param i2c_bus: the raspberry pi bus the sensors are running on
+    :type i2c_bus: int
+    :param sensor_names: a list of names, to identify the sensors. Defaults to ``["left", "center", "right"]`` if ``None``
+    :type sensor_names: Union[List[str], None]
+    :param init_mode: the mode the sensors should be initialised with. Defaults to mode 0. See :py:meth:`Sensor.configure() <.Sensor.configure>` method
+    :type init_mode: int
+    """
+
+    def __init__(self, i2c_bus: int, sensors: Union[Sensor, None] = None, sensor_names: Union[List[str], None] = None, init_mode: int = 0):
+        self.bus = i2c_bus
+        self.mode = init_mode
+
+        if sensor_names is None:
+            self.sensor_names = ["left", "center", "right"]
+        else:
+            self.sensor_names = sensor_names
+        self._sensors = sensors
+
+        self._queues = []
+        self._threads = []
+
+        if self._sensors is None:
+            if sensor_names is None:
+                raise ValueError("When setting the sensors manually the names must be set as well")
+            self._set_sensors()
+        else:
+            if len(self.sensor_names) != len(self._sensors):
+                raise ValueError("Sensors and names do not match in length")
+
+            for sensor, name in zip(self._sensors, self.sensor_names):
+                self.__setattr__(name, sensor)
+
+    def _set_sensors(self):
+        default_addr = 0x62
+        for addr, name in enumerate(self.sensor_names, default_addr):
+            sensor_name = f"sensor_{name}"
+            sensor = Sensor(i2c_bus=self.bus)
+            sensor.change_addr(addr)
+            sensor.configure(self.mode)
+            self._sensors.append(sensor)
+            self.__setattr__(sensor_name, sensor)
+
+    def __str__(self):
+        return f"{len(self.sensor_names)} Sensors on Bus {self.busnum}"
+
+    def __repr__(self):
+        return f"Sensor(i2c_bus={self.busnum}, {self.sensor_names}, init_mode={self.mode})"
+
+    def __enter__(self):
+        return (self, *self._sensors)
+
+    def __exit__(self, type, value, traceback):
+        self.close()
+
+    def _measure_sensor(self, sensor: Sensor, queue: queue.Queue):
+        time_before = time.perf_counter()
+        while True:
+            sensor.measure()
+            time_now = time.perf_counter()
+            queue.put(Data(sensor.read_measurements(), time_now - time_before))
+            time_before = time_now
+
+    def start(self):
+        """
+        Method to start the measurements of the sensors
+        """
+        for s in self.sensors:
+            q = queue.Queue()
+            self._queues.append(q)
+
+            thread = Thread(target=self._measure_sensor, args=[s, q], daemon=True)
+            self._threads.append(thread)
+            thread.start()
+
+    def get_closest(self) -> Data:
+        closest = None
+        for i, q in enumerate(self._queues):
+            try:
+                val = q.get()
+            except queue.Empty:
+                continue
+
+            if closest is None or (val < closest and val != 0):
+                closest = val
+            else:
+                closest = Data(1000, 0)
+        return closest
+
+    def close(self):
+        """
+        Method do close and delete all sensors from the group. This method is also called when exiting the ``with``-Statement
+        """
+
+        for sensor, name in zip(self._sensors, self.sensor_names):
+            try:
+                sensor.close()
+            except OSError:
+                pass
+            self.__delattr__(name)
+        self.sensor_names = []
+        self._sensors = []
+
+    @property
+    def sensors(self):
+        return self._sensors
+
+    def set_mode(self, mode_num: int, sensors: List[str] = None):
+        """
+        Method to set the mode for specific or all Sensors in the group
+
+        :param mode_num: the mode number, referring to the mode if the :py:meth:`configure() <.Sensor.configure>` method of the :class:`.Sensor`
+        :param sensors: the sensornames of which the mode should be changed
+        :raises TypeError: TypeError when the is no such sensor in the group
+        """
+        if sensors is None or len(sensors) == 0:
+            sensors = self.sensor_names
+
+        for sensor_name in sensors:
+            if not hasattr(self, sensor_name):
+                raise TypeError(f"The SensorGroup does not have a Sensor called {sensor_name}")
+            sensor = self.__getattribute__(sensor_name)
+            if not isinstance(sensor, Sensor):
+                raise TypeError(f"The SensorGroup does not have a Sensor called {sensor_name}")
+
+            sensor.configure(mode_num)
+
         
 if __name__ == "__main__":
     import time    
