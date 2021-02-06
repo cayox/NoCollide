@@ -6,7 +6,7 @@ from abc import abstractmethod
 import time
 
 # from smbus2 import SMBus
-from .data import Data
+from .data import Distance
 
 
 class AbstractSensor:
@@ -247,6 +247,11 @@ class SensorGroup:
             for sensor, name in zip(self._sensors, self.sensor_names):
                 self.__setattr__(name, sensor)
 
+        self.max_range = 0
+        for s in self._sensors:
+            if s.max_range > self.max_range:
+                self.max_range = s.max_range
+
     def _set_sensors(self):
         default_addr = 0x62
         for addr, name in enumerate(self.sensor_names, default_addr):
@@ -274,7 +279,7 @@ class SensorGroup:
         while True:
             sensor.measure()
             time_now = time.perf_counter()
-            queue.put(Data(sensor.read_measurements(), time_now - time_before))
+            queue.put(Distance(sensor.read_measurements(), time_now - time_before))
             time_before = time_now
 
     def start(self):
@@ -289,7 +294,7 @@ class SensorGroup:
             self._threads.append(thread)
             thread.start()
 
-    def get_closest(self) -> Data:
+    def get_closest(self) -> Distance:
         closest = None
         for i, q in enumerate(self._queues):
             try:
@@ -300,7 +305,7 @@ class SensorGroup:
             if closest is None or (val < closest and val != 0):
                 closest = val
             else:
-                closest = Data(1000, 0)
+                closest = Distance(self.max_range, 0)
         return closest
 
     def close(self):

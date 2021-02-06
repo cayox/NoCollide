@@ -6,20 +6,8 @@ class Data:
         self.value = value
         self.time = time
 
-    def calc_acc(self, data_before: Data) -> Data:
-        delta_t = (self.time - data_before.time)
-        if delta_t == 0:
-            return Data(0, 0)
-        return Data(self.value / (self.time - data_before.time), self.time)
-
-    def calc_v(self, data_before: Data) -> Data:
-        delta_t = (self.time - data_before.time)
-        if delta_t == 0:
-            return Data(0, 0)
-        return Data((self.value - data_before.value) / (self.time - data_before.time), self.time)
-
     def __str__(self):
-        return f"{self.value} @ {self.time}s"
+        return f"{self.value} @ {self.time} s"
 
     def __sub__(self, other) -> Data:
         if isinstance(other, Data):
@@ -70,3 +58,32 @@ class Data:
         if isinstance(other, Data):
             return self.value > other.value
         return self.value > other
+
+
+class Speed(Data):
+
+    def __str__(self):
+        return f"{self.value} m/s @ {self.time} s"
+
+    @property
+    def speed(self):
+        return self.value
+
+    def acceleration(self, other: Speed) -> Data:
+        delta_t = (self.time - other.time)
+        if delta_t == 0:
+            return Speed(0, 0)
+        return Speed(self.value / (self.time - other.time), self.time)
+
+
+class Distance(Data):
+
+    def __str__(self):
+        return f"{self.value} m @ {self.time} s"
+
+    @property
+    def distance(self):
+        return self.value
+
+    def velocity(self, other: Distance) -> Speed:
+        return Speed((other.value - self.value) / (self.time - other.time), self.time)

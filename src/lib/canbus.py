@@ -3,7 +3,7 @@ from threading import Thread
 import time
 from abc import abstractmethod
 
-from .data import Data
+from .data import Speed
 
 
 class CanConfig:
@@ -16,7 +16,7 @@ class CanConfig:
 
 class Driver:
     @abstractmethod
-    def get_speed(self) -> Data:
+    def get_speed(self) -> Speed:
         pass
 
     @abstractmethod
@@ -44,8 +44,6 @@ class CanBus(Driver):
         self.thread = Thread(target=self.run_forever, daemon=True)
         self.thread.start()
 
-        self.last_rx_time = 0
-
     def run_forever(self):
         """
         Method to keep in touch with the CAN-Bus. Runs in a thread, to avoid blocking
@@ -59,10 +57,9 @@ class CanBus(Driver):
 
             if self.q.full():
                 _ = self.q.get()  # remove oldest value
-            self.q.put(Data(speed, rx_time - self.last_rx_time))
-            self.last_rx_time = rx_time
+            self.q.put(Speed(speed, rx_time))
 
-    def get_speed(self) -> Data:
+    def get_speed(self) -> Speed:
         """
         Method to retrieve the speed from the queue
 

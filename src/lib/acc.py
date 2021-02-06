@@ -1,9 +1,8 @@
 from typing import *
 import time
-
 from .sensor import Sensor, SensorGroup
 from .canbus import CanBus, CanConfig
-from .data import Data
+from .data import Data, Distance
 
 
 class FIFO(list):
@@ -36,10 +35,11 @@ class TtcTimes:
 
 
 class ACC:
-    def __init__(self, can_config: CanConfig, sensors: SensorGroup, ttc_times: Union[TtcTimes, None] = None):
+    def __init__(self,  can_config: CanConfig, sensors: SensorGroup, min_distance: float = 5.0, ttc_times: Union[TtcTimes, None] = None):
         self.can_bus = CanBus(can_config)
 
         self.sensors = sensors
+        self.min_distance = min_distance
 
         if ttc_times is None:
             self.ttc_times = TtcTimes(0.6, 1.6, 3.0)
@@ -49,42 +49,29 @@ class ACC:
     def run(self):
         self.can_bus.run_forever()
 
-        v_old = Data(0, 0)
-        front_old = Data(0, 0)
-        v_front_old = Data(0, 0)
+        old_distance_between = None
+        file = open("test.csv", "w", newline="")
+        file.write(";".join(["distance", "time", "velocity", "ttc"]) + "\n")
 
         while True:
-            # time.sleep(0.2)
-            v = self.can_bus.get_speed()
-            print(f"v: {v}")
-            a = v.calc_acc(v_old)
-            print(f"a: {a}")
+            _ = self.can_bus.get_speed()
 
-            v_old = v
-
-            front = self.sensors.get_closest()
-            print(f"Closest Object: {front}")
-            if front == 1:
+            distance_between = self.sensors.get_closest()
+            if distance_between >= self.sensors.max_range or distance_between.value == 0 or old_distance_between is None:
+                old_distance_between = distance_between
                 continue
 
-            v_front = front.calc_v(front_old)
-            # print(f"v_front: {v_front}")
-            a_front = v_front.calc_acc(v_front_old)
 
-            front_old = front
-            v_front_old = v_front
+            delta_v = distance_between.velocity(old_distance_between)
+            print(f"delta_v: {delta_v}")
 
-            v_rel = v - v_front
-            a_rel = a - a_front
-            # print(f"v_rel: {v_rel}")
-
-            if v_rel == 0:
-                continue
+            old_distance_between = distance_between
 
             # https://www.sbes.vt.edu/gabler/publications/Kusano-Gabler-SAE-TTC_EDRs-2011-01-0576.pdf
-            ttc = front.value / v.value
-            # ttc = v.time - (1 / (2*v_rel.value)) * a_rel.value * (v.time ** 2)
+            ttc = distance_between.value / delta_v.value
+            # ttc = v.time - (1 / (2*v.value)) * a.value * (v.time ** 2)
             print(f"TTC: {ttc} s")
+            file.write(";".join([str(v).replace(".", ",") for v in [distance_between.value, distance_between.time, delta_v.value, ttc]]) + "\n")
             if self.regulate(ttc):
                 break
 
@@ -92,6 +79,7 @@ class ACC:
         if ttc <= self.ttc_times.warning:
             self.can_bus.warn()
         if ttc <= self.ttc_times.brake:
+            print("BRAKE!")
             self.can_bus.set_throttle(0)
             # brake intensity depending on the time to colision
             brake_factor = (ttc - self.ttc_times.emergency_brake) / (self.ttc_times.brake - self.ttc_times.emergency_brake)
