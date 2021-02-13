@@ -1,0 +1,144 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Data &#8212; noCollide  documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="index.html">noCollide  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Data</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="data">
+<span id="index-0"></span><h1>Data<a class="headerlink" href="#data" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="lib.data.Data">
+<em class="property">class </em><code class="sig-prename descclassname">lib.data.</code><code class="sig-name descname">Data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">time</span><span class="p">:</span> <span class="n">float</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.data.Data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt id="lib.data.Speed">
+<em class="property">class </em><code class="sig-prename descclassname">lib.data.</code><code class="sig-name descname">Speed</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">time</span><span class="p">:</span> <span class="n">float</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.data.Speed" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class to extend the :py:class: <cite>Data &lt;.Data&gt;</cite>. This class stores velocity values and the
+acceleration can be easily calculated</p>
+<dl class="py method">
+<dt id="lib.data.Speed.acceleration">
+<code class="sig-name descname">acceleration</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#lib.data.Speed" title="lib.data.Speed">lib.data.Speed</a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#lib.data.Data" title="lib.data.Data">lib.data.Data</a><a class="headerlink" href="#lib.data.Speed.acceleration" title="Permalink to this definition">¶</a></dt>
+<dd><p>A method to calculate the acceleration</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>other</strong> – the Speed before with which the Acceleration should be calculated</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the Acceleration</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><dl class="field-list simple">
+<dt class="field-odd">py:class</dt>
+<dd class="field-odd"><p><cite>Data &lt;.Data&gt;</cite></p>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="lib.data.Distance">
+<em class="property">class </em><code class="sig-prename descclassname">lib.data.</code><code class="sig-name descname">Distance</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">time</span><span class="p">:</span> <span class="n">float</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.data.Distance" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class to extend the :py:class: <cite>Data &lt;.Data&gt;</cite>. This class stores distance values and the
+velocity can be easily calculated</p>
+<dl class="py method">
+<dt id="lib.data.Distance.velocity">
+<code class="sig-name descname">velocity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#lib.data.Distance" title="lib.data.Distance">lib.data.Distance</a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#lib.data.Speed" title="lib.data.Speed">lib.data.Speed</a><a class="headerlink" href="#lib.data.Distance.velocity" title="Permalink to this definition">¶</a></dt>
+<dd><p>A method to calculate the velocity. Returns Speed with value 1 if the times are the same</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>other</strong> – the Distance before with which the speed should be calculated</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the speed</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><dl class="field-list simple">
+<dt class="field-odd">py:class</dt>
+<dd class="field-odd"><p><cite>Speed &lt;.Speed&gt;</cite></p>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/data.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="index.html">noCollide  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Data</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Nico Päller, Manuel Wilke.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.3.
+    </div>
+  </body>
+</html>

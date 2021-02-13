@@ -1,0 +1,294 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sensor &#8212; noCollide  documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Driver" href="driver.html" />
+    <link rel="prev" title="NoCollide" href="no_collide.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="driver.html" title="Driver"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="no_collide.html" title="NoCollide"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">noCollide  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Sensor</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="sensor">
+<span id="index-0"></span><h1>Sensor<a class="headerlink" href="#sensor" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="lib.sensor.SensorInterface">
+<em class="property">class </em><code class="sig-prename descclassname">lib.sensor.</code><code class="sig-name descname">SensorInterface</code><a class="headerlink" href="#lib.sensor.SensorInterface" title="Permalink to this definition">¶</a></dt>
+<dd><p>An interface to implement a sensor with all the needed methods to function properly</p>
+<dl class="py method">
+<dt id="lib.sensor.SensorInterface.change_addr">
+<em class="property">abstract </em><code class="sig-name descname">change_addr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_addr</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.sensor.SensorInterface.change_addr" title="Permalink to this definition">¶</a></dt>
+<dd><p>A method to change the i2c address to be used with multiple devices on one bus</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_addr</strong> (<em>int</em>) – the new address that should be set</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lib.sensor.SensorInterface.close">
+<em class="property">abstract </em><code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#lib.sensor.SensorInterface.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>A method to close the sensor/bus</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lib.sensor.SensorInterface.configure">
+<em class="property">abstract </em><code class="sig-name descname">configure</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mode</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.sensor.SensorInterface.configure" title="Permalink to this definition">¶</a></dt>
+<dd><p>A method to apply any configuration to the sensor</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>mode</strong> (<em>int</em>) – the mode that should be set</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lib.sensor.SensorInterface.measure">
+<em class="property">abstract </em><code class="sig-name descname">measure</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">rec_bias_corr</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.sensor.SensorInterface.measure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to tell the sensor to measure a value</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>rec_bias_corr</strong> (<em>bool</em>) – wether to measure with bias correction</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lib.sensor.SensorInterface.read_measurements">
+<em class="property">abstract </em><code class="sig-name descname">read_measurements</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#lib.sensor.SensorInterface.read_measurements" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to retrieve the measured data from the sensor</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the measured data</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="lib.sensor.Sensor">
+<em class="property">class </em><code class="sig-prename descclassname">lib.sensor.</code><code class="sig-name descname">Sensor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">i2c_bus</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">1</span></em>, <em class="sig-param"><span class="n">max_range</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">50</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.sensor.Sensor" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Class that handles a LiDAR Sensor</p>
+<dl class="field-list simple">
+<dt class="field-odd">Param</dt>
+<dd class="field-odd"><p>i2c_bus: the bus number on which the sensor is running, defaults to Bus 1</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="lib.sensor.Sensor.change_addr">
+<code class="sig-name descname">change_addr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_addr</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.sensor.Sensor.change_addr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to change the I2C Address of the sensor</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_addr</strong> (<em>int</em>) – the new address that should be set</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lib.sensor.Sensor.close">
+<code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#lib.sensor.Sensor.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to close the bus</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lib.sensor.Sensor.configure">
+<code class="sig-name descname">configure</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mode</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.sensor.Sensor.configure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to initialize the sensor to different modi. Must be done before the sensor can be used</p>
+<p><strong>configuration:</strong>  Defaults to <strong>0</strong>.</p>
+<div class="line-block">
+<div class="line"><strong>0</strong>: Default mode, balanced performance</div>
+<div class="line"><strong>1</strong>: Short range, high speed. Uses <code class="docutils literal notranslate"><span class="pre">0x1d</span></code> maximum acquisition count</div>
+<div class="line"><strong>2</strong>: Default range, higher speed short range. Turns on quick termination</div>
+<div class="line-block">
+<div class="line">detection for faster measurements at short range (with decreased accuracy)</div>
+</div>
+<div class="line"><strong>3</strong>: Maximum range. Uses <code class="docutils literal notranslate"><span class="pre">0xff</span></code> maximum acquisition count</div>
+<div class="line"><strong>4</strong>: High sensitivity detection. Overrides default valid measurement detection</div>
+<div class="line-block">
+<div class="line">algorithm, and uses a threshold value for high sensitivity and noise</div>
+</div>
+<div class="line"><strong>5</strong>: Low sensitivity detection. Overrides default valid measurement detection</div>
+<div class="line-block">
+<div class="line">algorithm, and uses a threshold value for low sensitivity and noise</div>
+</div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>mode</strong> (<em>int</em>) – the selected mode</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lib.sensor.Sensor.measure">
+<code class="sig-name descname">measure</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">rec_bias_corr</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.sensor.Sensor.measure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to tell the sensor to take a measurement</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>rec_bias_corr</strong> (<em>bool</em>) – Wether the measurement should be taken with or without receiver bias correction; defaults to True</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lib.sensor.Sensor.read_measurements">
+<code class="sig-name descname">read_measurements</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#lib.sensor.Sensor.read_measurements" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to obtain the measured distance in cm</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the measured value in cm. Returns 0 if timeouted</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="lib.sensor.SensorGroup">
+<em class="property">class </em><code class="sig-prename descclassname">lib.sensor.</code><code class="sig-name descname">SensorGroup</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">i2c_bus</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">sensors</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference internal" href="#lib.sensor.SensorInterface" title="lib.sensor.SensorInterface">lib.sensor.SensorInterface</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">sensor_names</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>List<span class="p">[</span>str<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">init_mode</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.sensor.SensorGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class to connect to multiple sensors at once.</p>
+<p>This class can be used in a context manager (<code class="docutils literal notranslate"><span class="pre">with</span></code> statement).
+It returns itself and then all <a class="reference internal" href="#lib.sensor.Sensor" title="lib.sensor.Sensor"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sensors</span></code></a> which are being set (default: 3).</p>
+<p><strong>If not used in a</strong> <code class="docutils literal notranslate"><span class="pre">with</span></code> <strong>-Statement the bus must be closed manually using the</strong> <a class="reference internal" href="#lib.sensor.SensorGroup.close" title="lib.sensor.SensorGroup.close"><code class="xref py py-meth docutils literal notranslate"><span class="pre">close()</span></code></a> <strong>method</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">SensorGroup</span><span class="p">(</span><span class="n">i2c_bus</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="k">as</span> <span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="o">*</span><span class="n">sensors</span><span class="p">):</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>i2c_bus</strong> (<em>int</em>) – the raspberry pi bus the sensors are running on</p></li>
+<li><p><strong>sensor_names</strong> (<em>Union</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>None</em><em>]</em>) – a list of names, to identify the sensors. Defaults to <code class="docutils literal notranslate"><span class="pre">[&quot;left&quot;,</span> <span class="pre">&quot;center&quot;,</span> <span class="pre">&quot;right&quot;]</span></code> if <code class="docutils literal notranslate"><span class="pre">None</span></code></p></li>
+<li><p><strong>init_mode</strong> (<em>int</em>) – the mode the sensors should be initialised with. Defaults to mode 0. See <a class="reference internal" href="#lib.sensor.Sensor.configure" title="lib.sensor.Sensor.configure"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Sensor.configure()</span></code></a> method</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="lib.sensor.SensorGroup.close">
+<code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#lib.sensor.SensorGroup.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method do close and delete all sensors from the group. This method is also called when exiting the <code class="docutils literal notranslate"><span class="pre">with</span></code>-Statement</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lib.sensor.SensorGroup.set_mode">
+<code class="sig-name descname">set_mode</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mode_num</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">sensors</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>List<span class="p">[</span>str<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.sensor.SensorGroup.set_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to set the mode for specific or all Sensors in the group</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mode_num</strong> – the mode number, referring to the mode if the <a class="reference internal" href="#lib.sensor.Sensor.configure" title="lib.sensor.Sensor.configure"><code class="xref py py-meth docutils literal notranslate"><span class="pre">configure()</span></code></a> method of the <a class="reference internal" href="#lib.sensor.Sensor" title="lib.sensor.Sensor"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sensor</span></code></a></p></li>
+<li><p><strong>sensors</strong> – the sensornames of which the mode should be changed</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>TypeError</strong> – TypeError when the is no such sensor in the group</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lib.sensor.SensorGroup.start">
+<code class="sig-name descname">start</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#lib.sensor.SensorGroup.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to start the measurements of the sensors. Launches a Thread for each sensor, where it measures continously
+in a loop</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="no_collide.html"
+                        title="previous chapter">NoCollide</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="driver.html"
+                        title="next chapter">Driver</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/sensor.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="driver.html" title="Driver"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="no_collide.html" title="NoCollide"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">noCollide  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Sensor</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Nico Päller, Manuel Wilke.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.3.
+    </div>
+  </body>
+</html>

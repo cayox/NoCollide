@@ -5,7 +5,7 @@ src/venv
 .vscode
 
 # doc build files
-docs/build/*
+# docs/build/*
 
 # pycache
 src/__pycache__

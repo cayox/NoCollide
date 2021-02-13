@@ -1,0 +1,222 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simulation Integration &#8212; noCollide  documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Data" href="data.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="data.html" title="Data"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">noCollide  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Simulation Integration</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="simulation-integration">
+<span id="index-0"></span><h1>Simulation Integration<a class="headerlink" href="#simulation-integration" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="lib.sim_interfaces.SimNoCollide">
+<em class="property">class </em><code class="sig-prename descclassname">lib.sim_interfaces.</code><code class="sig-name descname">SimNoCollide</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">hud</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.sim_interfaces.SimNoCollide" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class to use the NoCollide in the Carla-Simulator. Simply integrates the HUD of the simulator to warn via the
+HUD rather than to warn via some kind of Bus</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hud</strong> – The HUD of the Simulation</p></li>
+<li><p><strong>args</strong> – Arguments to be passed to the parent class</p></li>
+<li><p><strong>kwargs</strong> – Keyword arguments to be passed to the parent class</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="lib.sim_interfaces.SimNoCollide.warn">
+<code class="sig-name descname">warn</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ttc</span><span class="p">:</span> <span class="n">float</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.sim_interfaces.SimNoCollide.warn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overwrites the parent warn Method to warn via the HUD rather than some kind of Bus
+:param ttc: the Time-to-Collision in seconds
+:type ttc: float</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="lib.sim_interfaces.SimSensor">
+<em class="property">class </em><code class="sig-prename descclassname">lib.sim_interfaces.</code><code class="sig-name descname">SimSensor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sensor</span></em>, <em class="sig-param"><span class="n">max_range</span><span class="o">=</span><span class="default_value">40</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.sim_interfaces.SimSensor" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class to implement the Carla-Simulator object detection sensor. Due to the constant pushing nature of the Carla sensor,
+the last retrieved value and time must be saved to be ready when the NoCollide Algorithm requests the Value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sensor</strong> – the Carla sensor to use</p></li>
+<li><p><strong>max_range</strong> – the maximum range of the Carla Sensor</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="lib.sim_interfaces.SimSensor.callback">
+<code class="sig-name descname">callback</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.sim_interfaces.SimSensor.callback" title="Permalink to this definition">¶</a></dt>
+<dd><p>The callback method that is called, whenever the Carla sensor has measured new data. Simply stores the data,
+so taht i can be requested any time</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> – the data measured by the carla sensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lib.sim_interfaces.SimSensor.change_addr">
+<code class="sig-name descname">change_addr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">addr</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.sim_interfaces.SimSensor.change_addr" title="Permalink to this definition">¶</a></dt>
+<dd><p>A method to change the i2c address to be used with multiple devices on one bus</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_addr</strong> (<em>int</em>) – the new address that should be set</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lib.sim_interfaces.SimSensor.close">
+<code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#lib.sim_interfaces.SimSensor.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>A method to close the sensor/bus</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lib.sim_interfaces.SimSensor.configure">
+<code class="sig-name descname">configure</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mode</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.sim_interfaces.SimSensor.configure" title="Permalink to this definition">¶</a></dt>
+<dd><p>A method to apply any configuration to the sensor</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>mode</strong> (<em>int</em>) – the mode that should be set</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lib.sim_interfaces.SimSensor.destroy">
+<code class="sig-name descname">destroy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#lib.sim_interfaces.SimSensor.destroy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to destroy the Sensor to free up memory when the simulation has ended</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lib.sim_interfaces.SimSensor.listen">
+<code class="sig-name descname">listen</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#lib.sim_interfaces.SimSensor.listen" title="Permalink to this definition">¶</a></dt>
+<dd><p>A Method to tell the Carla sensor to use the <a class="reference internal" href="#lib.sim_interfaces.SimSensor.callback" title="lib.sim_interfaces.SimSensor.callback"><code class="xref py py-meth docutils literal notranslate"><span class="pre">callback()</span></code></a> method whenever a new
+value is measured</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lib.sim_interfaces.SimSensor.measure">
+<code class="sig-name descname">measure</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">rec_bias_corr</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.sim_interfaces.SimSensor.measure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to tell the sensor to measure a value</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>rec_bias_corr</strong> (<em>bool</em>) – wether to measure with bias correction</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lib.sim_interfaces.SimSensor.read_measurements">
+<code class="sig-name descname">read_measurements</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="data.html#lib.data.Distance" title="lib.data.Distance">lib.data.Distance</a><a class="headerlink" href="#lib.sim_interfaces.SimSensor.read_measurements" title="Permalink to this definition">¶</a></dt>
+<dd><p>The method ot retrieve the newest Data of the Sensor. If the Carla Sensor hasn’t measured anything yet,
+a <a class="reference internal" href="data.html#lib.data.Distance" title="lib.data.Distance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Distance</span></code></a> object will be returned with the maximum range.
+:return: the newest Distance measured by the Carla sensor
+:rtype: <a class="reference internal" href="data.html#lib.data.Distance" title="lib.data.Distance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Distance</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lib.sim_interfaces.SimSensor.stop">
+<code class="sig-name descname">stop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#lib.sim_interfaces.SimSensor.stop" title="Permalink to this definition">¶</a></dt>
+<dd><p>A method that is needed when stopping the simulation.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="lib.sim_interfaces.SimSensorGroup">
+<em class="property">class </em><code class="sig-prename descclassname">lib.sim_interfaces.</code><code class="sig-name descname">SimSensorGroup</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">i2c_bus</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">sensors</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference internal" href="sensor.html#lib.sensor.SensorInterface" title="lib.sensor.SensorInterface">lib.sensor.SensorInterface</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">sensor_names</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>List<span class="p">[</span>str<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">init_mode</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.sim_interfaces.SimSensorGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class to overwrite the <a class="reference internal" href="sensor.html#lib.sensor.SensorGroup" title="lib.sensor.SensorGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">SensorGroup</span></code></a> class to use the simulated sensor when retrieving the distance</p>
+<dl class="py method">
+<dt id="lib.sim_interfaces.SimSensorGroup.get_closest">
+<code class="sig-name descname">get_closest</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="data.html#lib.data.Distance" title="lib.data.Distance">lib.data.Distance</a><a class="headerlink" href="#lib.sim_interfaces.SimSensorGroup.get_closest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class to overwrite the <code class="xref py py-meth docutils literal notranslate"><span class="pre">get_closest()</span></code> method to use the simulated sensor when retrieving the distance
+:return:</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="data.html"
+                        title="previous chapter">Data</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/sim_interfaces.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="data.html" title="Data"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">noCollide  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Simulation Integration</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Nico Päller, Manuel Wilke.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.3.
+    </div>
+  </body>
+</html>
