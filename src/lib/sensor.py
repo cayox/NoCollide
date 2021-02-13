@@ -9,21 +9,60 @@ import time
 from .data import Distance
 
 
-class AbstractSensor:
+class SensorInterface:
+    """
+    An interface to implement a sensor with all the needed methods to function properly
+    """
     @abstractmethod
     def measure(self, rec_bias_corr: bool = True):
+        """
+        Method to tell the sensor to measure a value
+
+        :param rec_bias_corr: wether to measure with bias correction
+        :type rec_bias_corr: bool
+        """
         pass
 
     @abstractmethod
-    def read_measurements(self) -> int:
+    def read_measurements(self) -> float:
+        """
+        Method to retrieve the measured data from the sensor
+
+        :return: the measured data
+        :rtype: float
+        """
         pass
 
     @abstractmethod
     def close(self):
+        """
+        A method to close the sensor/bus
+
+        """
+        pass
+
+    @abstractmethod
+    def change_addr(self, new_addr: int):
+        """
+        A method to change the i2c address to be used with multiple devices on one bus
+
+        :param new_addr: the new address that should be set
+        :type new_addr: int
+        """
+        pass
+
+    @abstractmethod
+    def configure(self, mode: int):
+        """
+        A method to apply any configuration to the sensor
+
+        :param mode: the mode that should be set
+        :type mode: int
+        """
         pass
 
 
-class Sensor(AbstractSensor):
+class Sensor(SensorInterface):
     """
     The Class that handles a LiDAR Sensor
 
@@ -181,7 +220,7 @@ class Sensor(AbstractSensor):
         """
         self._bus.write_byte_data(self._addr, 0x00, 0x04 if rec_bias_corr else 0x03)
     
-    def read_measurements(self) -> int:
+    def read_measurements(self) -> float:
         """
         Method to obtain the measured distance in cm
 
@@ -223,7 +262,12 @@ class SensorGroup:
     :type init_mode: int
     """
 
-    def __init__(self, i2c_bus: int, sensors: Union[Sensor, None] = None, sensor_names: Union[List[str], None] = None, init_mode: int = 0):
+    def __init__(self,
+                 i2c_bus: int,
+                 sensors: Union[SensorInterface, None] = None,
+                 sensor_names: Union[List[str], None] = None,
+                 init_mode: int = 0):
+
         self.bus = i2c_bus
         self.mode = init_mode
 
@@ -274,7 +318,7 @@ class SensorGroup:
     def __exit__(self, type, value, traceback):
         self.close()
 
-    def _measure_sensor(self, sensor: Sensor, queue: queue.Queue):
+    def _measure_sensor(self, sensor: SensorInterface, queue: queue.Queue):
         time_before = time.perf_counter()
         while True:
             sensor.measure()
@@ -284,7 +328,8 @@ class SensorGroup:
 
     def start(self):
         """
-        Method to start the measurements of the sensors
+        Method to start the measurements of the sensors. Launches a Thread for each sensor, where it measures continously
+        in a loop
         """
         for s in self.sensors:
             q = queue.Queue()
@@ -341,7 +386,7 @@ class SensorGroup:
             if not hasattr(self, sensor_name):
                 raise TypeError(f"The SensorGroup does not have a Sensor called {sensor_name}")
             sensor = self.__getattribute__(sensor_name)
-            if not isinstance(sensor, Sensor):
+            if not isinstance(sensor, SensorInterface):
                 raise TypeError(f"The SensorGroup does not have a Sensor called {sensor_name}")
 
             sensor.configure(mode_num)
@@ -350,7 +395,7 @@ class SensorGroup:
 if __name__ == "__main__":
     import time    
 
-    with Sensor() as s:
+    with SensorInterface() as s:
         s.configure()
 
         while True:

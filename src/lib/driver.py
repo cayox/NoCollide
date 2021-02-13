@@ -15,25 +15,58 @@ class CanConfig:
 
 
 class Driver:
+    """
+    An interface to be used by the :py:class: `noCollide <.nocollide.NoCollide>` class get and set parameters regarding
+    the vehicle
+    """
     @abstractmethod
     def get_speed(self) -> Speed:
+        """
+        A method to retrieve the current speed of the car
+
+        :return: the current speed of the car
+        :rtype: :py:class: `Speed <.data.Speed>`
+        """
         pass
 
     @abstractmethod
     def set_throttle(self, val: float):
+        """
+        A method to set the throttle of the vehicle
+
+        :param val: the throttle amound
+        :type val: float
+        """
         pass
 
     @abstractmethod
     def set_brake(self, val):
+        """
+        A method to set the brake amount of the vehicle
+
+        :param val: the brake amound
+        :type val: float
+        """
         pass
 
     @abstractmethod
     def warn(self):
+        """
+        A method to warn the user for possible collisions
+        """
         pass
 
 
 class CanBus(Driver):
     def __init__(self, conf: CanConfig, q_size: int = 1):
+        """
+        An implementation of a CAN Bus to warn the user and controll the car if possible.
+
+        :param conf: the CAN Bus configuration
+        :type conf: :py:class: `CanConfig <.CanConfig>`
+        :param q_size: the amount of recent values to store, when polling the speed of the vehicle. Defaults to 1
+        :type q_size: int
+        """
         # Queue to always save the last `q_size` amount of speeds
         self.q = Queue(maxsize=q_size)  # LIFO
         self.conf = conf

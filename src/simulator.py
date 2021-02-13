@@ -3,10 +3,10 @@ import random
 import math
 import time
 from enum import Enum
-from lib.canbus import Driver
-from lib.acc import ACC
+from lib.driver import Driver
+from lib.nocollide import NoCollide
 from lib.data import Speed, Distance
-from lib.sensor import AbstractSensor, SensorGroup
+from lib.sim_interfaces import SimSensor, SimSensorGroup
 
 
 class Scenario(Enum):
@@ -17,54 +17,6 @@ class Scenario(Enum):
     MID_DYNAMIC = 4
     SLOW_DYNAMIC = 5
     EDGE_CASE_1 = 6
-
-
-class SimSensor(AbstractSensor):
-    def __init__(self, sensor, max_range=40):
-        self.data = None
-        self.sensor = sensor
-        self.max_range = max_range
-
-        self.val = 0
-        self.time = 0
-
-    def close(self):
-        pass
-
-    def read_measurements(self) -> int:
-        # t = time.perf_counter()
-        if self.val == 0:
-            d = Distance(self.max_range, self.time)
-        else:
-            d = Distance(self.val, self.time)
-        return d
-
-    def measure(self, rec_bias_corr: bool = True):
-        pass
-
-    def callback(self, data):
-        self.time = data.timestamp
-        self.val = data.distance
-
-    def destroy(self):
-        self.sensor.destroy()
-
-    def listen(self):
-        self.sensor.listen(self.callback)
-
-
-class SimSensorGroup(SensorGroup):
-    def get_closest(self) -> Distance:
-        closest = None
-        for sensor in self._sensors:
-            val = sensor.read_measurements()
-
-            if closest is None or val < closest:
-                closest = val
-
-        if closest is None:
-            return Distance(self.max_range, 0)
-        return closest
 
 
 class Simulator(Driver):
@@ -207,9 +159,9 @@ class Simulator(Driver):
 
 if __name__ == "__main__":
     with Simulator(Scenario.FAST_DYNAMIC) as sim:
-        brain = ACC(None, sim.sensor_group)
+        brain = NoCollide(None, sim.sensor_group)
 
-        brain.can_bus = sim
+        brain.driver = sim
         time.sleep(2)
         brain.run()
         print(f"Max Speed: {sim.max_speed*3.6} km/h")

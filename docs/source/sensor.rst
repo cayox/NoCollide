@@ -4,6 +4,9 @@
 Sensor
 ======
 
+.. autoclass:: lib.sensor.SensorInterface
+   :members:
+
 .. autoclass:: lib.sensor.Sensor
    :members:
 
