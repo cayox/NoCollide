@@ -13,7 +13,9 @@
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Simulation Integration" href="sim_interfaces.html" />
+    <link rel="prev" title="Driver" href="driver.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -21,6 +23,12 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="sim_interfaces.html" title="Simulation Integration"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="driver.html" title="Driver"
+             accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">noCollide  documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Data</a></li> 
       </ul>
@@ -33,15 +41,27 @@
             
   <div class="section" id="data">
 <span id="index-0"></span><h1>Data<a class="headerlink" href="#data" title="Permalink to this headline">¶</a></h1>
+<p>To better and more easily calculate distances, and speed and to always have values and the corresponding times in one
+place, a custom Data class was created.</p>
 <dl class="py class">
 <dt id="lib.data.Data">
 <em class="property">class </em><code class="sig-prename descclassname">lib.data.</code><code class="sig-name descname">Data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">time</span><span class="p">:</span> <span class="n">float</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.data.Data" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>A class to store a value and its corresponding time. Calculation with <code class="docutils literal notranslate"><span class="pre">+</span></code>, <code class="docutils literal notranslate"><span class="pre">-</span></code>, <code class="docutils literal notranslate"><span class="pre">*</span></code>, <code class="docutils literal notranslate"><span class="pre">/</span></code> and all types of
+comparisons can be applied directly to the class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>value</strong> (<em>float</em>) – the value that should be stored</p></li>
+<li><p><strong>time</strong> (<em>float</em>) – the corresponding time to the value</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py class">
 <dt id="lib.data.Speed">
 <em class="property">class </em><code class="sig-prename descclassname">lib.data.</code><code class="sig-name descname">Speed</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">time</span><span class="p">:</span> <span class="n">float</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.data.Speed" title="Permalink to this definition">¶</a></dt>
-<dd><p>A class to extend the :py:class: <cite>Data &lt;.Data&gt;</cite>. This class stores velocity values and the
+<dd><p>A class to extend the <a class="reference internal" href="#lib.data.Data" title="lib.data.Data"><code class="xref py py-class docutils literal notranslate"><span class="pre">Data</span></code></a>. This class stores velocity values and the
 acceleration can be easily calculated</p>
 <dl class="py method">
 <dt id="lib.data.Speed.acceleration">
@@ -55,12 +75,7 @@ acceleration can be easily calculated</p>
 <dd class="field-even"><p>the Acceleration</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><dl class="field-list simple">
-<dt class="field-odd">py:class</dt>
-<dd class="field-odd"><p><cite>Data &lt;.Data&gt;</cite></p>
-</dd>
-</dl>
-</p>
+<dd class="field-odd"><p><a class="reference internal" href="#lib.data.Data" title="lib.data.Data">Data</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -70,7 +85,7 @@ acceleration can be easily calculated</p>
 <dl class="py class">
 <dt id="lib.data.Distance">
 <em class="property">class </em><code class="sig-prename descclassname">lib.data.</code><code class="sig-name descname">Distance</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">time</span><span class="p">:</span> <span class="n">float</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.data.Distance" title="Permalink to this definition">¶</a></dt>
-<dd><p>A class to extend the :py:class: <cite>Data &lt;.Data&gt;</cite>. This class stores distance values and the
+<dd><p>A class to extend the <a class="reference internal" href="#lib.data.Data" title="lib.data.Data"><code class="xref py py-class docutils literal notranslate"><span class="pre">Data</span></code></a>. This class stores distance values and the
 velocity can be easily calculated</p>
 <dl class="py method">
 <dt id="lib.data.Distance.velocity">
@@ -84,12 +99,7 @@ velocity can be easily calculated</p>
 <dd class="field-even"><p>the speed</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><dl class="field-list simple">
-<dt class="field-odd">py:class</dt>
-<dd class="field-odd"><p><cite>Speed &lt;.Speed&gt;</cite></p>
-</dd>
-</dl>
-</p>
+<dd class="field-odd"><p><a class="reference internal" href="#lib.data.Speed" title="lib.data.Speed">Speed</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -105,6 +115,12 @@ velocity can be easily calculated</p>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="driver.html"
+                        title="previous chapter">Driver</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="sim_interfaces.html"
+                        title="next chapter">Simulation Integration</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -132,6 +148,12 @@ velocity can be easily calculated</p>
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
+        <li class="right" >
+          <a href="sim_interfaces.html" title="Simulation Integration"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="driver.html" title="Driver"
+             >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">noCollide  documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Data</a></li> 
       </ul>

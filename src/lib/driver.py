@@ -16,7 +16,7 @@ class CanConfig:
 
 class Driver:
     """
-    An interface to be used by the :py:class: `noCollide <.nocollide.NoCollide>` class get and set parameters regarding
+    An interface to be used by the :class:`noCollide <.nocollide.NoCollide>` class get and set parameters regarding
     the vehicle
     """
     @abstractmethod
@@ -25,7 +25,7 @@ class Driver:
         A method to retrieve the current speed of the car
 
         :return: the current speed of the car
-        :rtype: :py:class: `Speed <.data.Speed>`
+        :rtype: Speed
         """
         pass
 
@@ -34,7 +34,7 @@ class Driver:
         """
         A method to set the throttle of the vehicle
 
-        :param val: the throttle amound
+        :param val: the throttle amount
         :type val: float
         """
         pass
@@ -44,7 +44,7 @@ class Driver:
         """
         A method to set the brake amount of the vehicle
 
-        :param val: the brake amound
+        :param val: the brake amount
         :type val: float
         """
         pass

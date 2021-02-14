@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/W32TeX) (preloaded format=pdflatex 2021.2.13)  13 FEB 2021 23:11
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/W32TeX) (preloaded format=pdflatex 2021.2.13)  14 FEB 2021 20:22
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -669,20 +669,20 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ]
 Chapter 1.
 LaTeX Font Info:    Trying to load font information for T1+pcr on input line 10
-2.
+5.
 (c:/texlive/2020/texmf-dist/tex/latex/psnfss/t1pcr.fd
 File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
 )
 LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 1
-07.
+10.
 
 (c:/texlive/2020/texmf-dist/tex/latex/psnfss/ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 )
 LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <10> not available
-(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 108.
+(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 111.
 
-Underfull \hbox (badness 7576) in paragraph at lines 125--125
+Underfull \hbox (badness 7576) in paragraph at lines 128--128
 []\T1/ptm/m/it/10 driver: [][]\T1/ptm/m/n/10 lib.driver.Driver[][], \T1/ptm/m/i
 t/10 sen-sors: [][]\T1/ptm/m/n/10 lib.sensor.SensorGroup[][],
  []
@@ -704,18 +704,18 @@ Chapter 4.
 ]
 Chapter 5.
 [13]
-Underfull \hbox (badness 10000) in paragraph at lines 799--799
+Underfull \hbox (badness 10000) in paragraph at lines 813--813
 []\T1/ptm/m/it/10 i2c_bus: int\T1/ptm/m/n/10 , \T1/ptm/m/it/10 sen-sors: Op-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 799--799
+Underfull \hbox (badness 10000) in paragraph at lines 813--813
 \T1/ptm/m/it/10 tional[[][]\T1/ptm/m/n/10 lib.sensor.SensorInterface[][]\T1/ptm
 /m/it/10 ] = None\T1/ptm/m/n/10 ,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 799--799
+Underfull \hbox (badness 10000) in paragraph at lines 813--813
 \T1/ptm/m/it/10 sen-sor_names: Op-tional[List[str]] = None\T1/ptm/m/n/10 ,
  []
 
@@ -757,7 +757,7 @@ Here is how much of TeX's memory you used:
  30095 multiletter control sequences out of 15000+600000
  446169 words of font info for 83 fonts, out of 8000000 for 9000
  1142 hyphenation exceptions out of 8191
- 83i,12n,88p,871b,575s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 83i,12n,88p,871b,664s stack positions out of 5000i,500n,10000p,200000b,80000s
 {c:/texlive/2020/texmf-dist/fonts/enc/dvips/base/8r.enc}<c:/texlive/2020/texm
 f-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/2020/texmf-dist/fo
 nts/type1/urw/courier/ucrb8a.pfb><c:/texlive/2020/texmf-dist/fonts/type1/urw/co
@@ -766,10 +766,10 @@ b><c:/texlive/2020/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb><c:/texlive/2
 020/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb><c:/texlive/2020/texmf-dist/
 fonts/type1/urw/times/utmb8a.pfb><c:/texlive/2020/texmf-dist/fonts/type1/urw/ti
 mes/utmr8a.pfb><c:/texlive/2020/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on nocollide.pdf (22 pages, 132842 bytes).
+Output written on nocollide.pdf (22 pages, 134321 bytes).
 PDF statistics:
- 332 PDF objects out of 1000 (max. 8388607)
- 291 compressed objects within 3 object streams
+ 338 PDF objects out of 1000 (max. 8388607)
+ 297 compressed objects within 3 object streams
  82 named destinations out of 1000 (max. 500000)
  77 words of extra memory for PDF output out of 10000 (max. 10000000)
 

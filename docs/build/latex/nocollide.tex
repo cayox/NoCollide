@@ -74,7 +74,7 @@
 
 
 \title{noCollide}
-\date{Feb 13, 2021}
+\date{Feb 14, 2021}
 \release{}
 \author{Nico Päller, Manuel Wilke}
 \newcommand{\sphinxlogo}{\vbox{}}
@@ -96,7 +96,10 @@ a Raspberry Pi or the CARLA Simulator.
 \index{NoCollide@\spxentry{NoCollide}}\ignorespaces 
 
 \chapter{NoCollide}
-\label{\detokenize{no_collide:nocollide}}\label{\detokenize{no_collide:index-0}}\label{\detokenize{no_collide::doc}}\index{TtcTimes (class in lib.nocollide)@\spxentry{TtcTimes}\spxextra{class in lib.nocollide}}
+\label{\detokenize{no_collide:nocollide}}\label{\detokenize{no_collide:index-0}}\label{\detokenize{no_collide::doc}}
+The NoCollide class is the brain of the system. Here all the sensor information is collected and used to calculate the
+Time\sphinxhyphen{}to\sphinxhyphen{}Collision
+\index{TtcTimes (class in lib.nocollide)@\spxentry{TtcTimes}\spxextra{class in lib.nocollide}}
 
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{no_collide:lib.nocollide.TtcTimes}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{lib.nocollide.}}\sphinxbfcode{\sphinxupquote{TtcTimes}}}{\emph{\DUrole{n}{too\_late}\DUrole{p}{:} \DUrole{n}{float}}, \emph{\DUrole{n}{brake}\DUrole{p}{:} \DUrole{n}{float}}, \emph{\DUrole{n}{warning}\DUrole{p}{:} \DUrole{n}{float}}}{}
@@ -182,7 +185,10 @@ The method to warn the user based on the Time\sphinxhyphen{}to\sphinxhyphen{}Col
 \index{Sensor@\spxentry{Sensor}}\ignorespaces 
 
 \chapter{Sensor}
-\label{\detokenize{sensor:sensor}}\label{\detokenize{sensor:index-0}}\label{\detokenize{sensor::doc}}\index{SensorInterface (class in lib.sensor)@\spxentry{SensorInterface}\spxextra{class in lib.sensor}}
+\label{\detokenize{sensor:sensor}}\label{\detokenize{sensor:index-0}}\label{\detokenize{sensor::doc}}
+The Sensors are the eyes and ears of the system. Here is a LiDAR Sensor implemented to be used for measuring the distance
+to the object in the front.
+\index{SensorInterface (class in lib.sensor)@\spxentry{SensorInterface}\spxextra{class in lib.sensor}}
 
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{sensor:lib.sensor.SensorInterface}}\pysigline{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{lib.sensor.}}\sphinxbfcode{\sphinxupquote{SensorInterface}}}
@@ -427,11 +433,14 @@ in a loop
 \index{Driver@\spxentry{Driver}}\ignorespaces 
 
 \chapter{Driver}
-\label{\detokenize{driver:driver}}\label{\detokenize{driver:index-0}}\label{\detokenize{driver::doc}}\index{Driver (class in lib.driver)@\spxentry{Driver}\spxextra{class in lib.driver}}
+\label{\detokenize{driver:driver}}\label{\detokenize{driver:index-0}}\label{\detokenize{driver::doc}}
+The driver is the interface between the assistant system and the vehicle itself. The Driver will be used to retrieve the
+current speed and set parameters e.g. the throttle.
+\index{Driver (class in lib.driver)@\spxentry{Driver}\spxextra{class in lib.driver}}
 
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{driver:lib.driver.Driver}}\pysigline{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{lib.driver.}}\sphinxbfcode{\sphinxupquote{Driver}}}
-An interface to be used by the :py:class: \sphinxtitleref{noCollide \textless{}.nocollide.NoCollide\textgreater{}} class get and set parameters regarding
+An interface to be used by the {\hyperref[\detokenize{no_collide:lib.nocollide.NoCollide}]{\sphinxcrossref{\sphinxcode{\sphinxupquote{noCollide}}}}} class get and set parameters regarding
 the vehicle
 \index{get\_speed() (lib.driver.Driver method)@\spxentry{get\_speed()}\spxextra{lib.driver.Driver method}}
 
@@ -443,12 +452,7 @@ A method to retrieve the current speed of the car
 the current speed of the car
 
 \item[{Return type}] \leavevmode
-\begin{quote}\begin{description}
-\item[{py:class}] \leavevmode
-\sphinxtitleref{Speed \textless{}.data.Speed\textgreater{}}
-
-\end{description}\end{quote}
-
+{\hyperref[\detokenize{data:lib.data.Speed}]{\sphinxcrossref{Speed}}}
 
 \end{description}\end{quote}
 
@@ -461,7 +465,7 @@ the current speed of the car
 A method to set the brake amount of the vehicle
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode
-\sphinxstyleliteralstrong{\sphinxupquote{val}} (\sphinxstyleliteralemphasis{\sphinxupquote{float}}) \textendash{} the brake amound
+\sphinxstyleliteralstrong{\sphinxupquote{val}} (\sphinxstyleliteralemphasis{\sphinxupquote{float}}) \textendash{} the brake amount
 
 \end{description}\end{quote}
 
@@ -474,7 +478,7 @@ A method to set the brake amount of the vehicle
 A method to set the throttle of the vehicle
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode
-\sphinxstyleliteralstrong{\sphinxupquote{val}} (\sphinxstyleliteralemphasis{\sphinxupquote{float}}) \textendash{} the throttle amound
+\sphinxstyleliteralstrong{\sphinxupquote{val}} (\sphinxstyleliteralemphasis{\sphinxupquote{float}}) \textendash{} the throttle amount
 
 \end{description}\end{quote}
 
@@ -533,7 +537,7 @@ Method to keep in touch with the CAN\sphinxhyphen{}Bus. Runs in a thread, to avo
 A method to set the brake amount of the vehicle
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode
-\sphinxstyleliteralstrong{\sphinxupquote{val}} (\sphinxstyleliteralemphasis{\sphinxupquote{float}}) \textendash{} the brake amound
+\sphinxstyleliteralstrong{\sphinxupquote{val}} (\sphinxstyleliteralemphasis{\sphinxupquote{float}}) \textendash{} the brake amount
 
 \end{description}\end{quote}
 
@@ -546,7 +550,7 @@ A method to set the brake amount of the vehicle
 A method to set the throttle of the vehicle
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode
-\sphinxstyleliteralstrong{\sphinxupquote{val}} (\sphinxstyleliteralemphasis{\sphinxupquote{float}}) \textendash{} the throttle amound
+\sphinxstyleliteralstrong{\sphinxupquote{val}} (\sphinxstyleliteralemphasis{\sphinxupquote{float}}) \textendash{} the throttle amount
 
 \end{description}\end{quote}
 
@@ -567,17 +571,34 @@ A method to warn the user for possible collisions
 \index{Data@\spxentry{Data}}\ignorespaces 
 
 \chapter{Data}
-\label{\detokenize{data:data}}\label{\detokenize{data:index-0}}\label{\detokenize{data::doc}}\index{Data (class in lib.data)@\spxentry{Data}\spxextra{class in lib.data}}
+\label{\detokenize{data:data}}\label{\detokenize{data:index-0}}\label{\detokenize{data::doc}}
+To better and more easily calculate distances, and speed and to always have values and the corresponding times in one
+place, a custom Data class was created.
+\index{Data (class in lib.data)@\spxentry{Data}\spxextra{class in lib.data}}
 
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{data:lib.data.Data}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{lib.data.}}\sphinxbfcode{\sphinxupquote{Data}}}{\emph{\DUrole{n}{value}\DUrole{p}{:} \DUrole{n}{float}}, \emph{\DUrole{n}{time}\DUrole{p}{:} \DUrole{n}{float}}}{}
+A class to store a value and its corresponding time. Calculation with \sphinxcode{\sphinxupquote{+}}, \sphinxcode{\sphinxupquote{\sphinxhyphen{}}}, \sphinxcode{\sphinxupquote{*}}, \sphinxcode{\sphinxupquote{/}} and all types of
+comparisons can be applied directly to the class.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{value}} (\sphinxstyleliteralemphasis{\sphinxupquote{float}}) \textendash{} the value that should be stored
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{time}} (\sphinxstyleliteralemphasis{\sphinxupquote{float}}) \textendash{} the corresponding time to the value
+
+\end{itemize}
+
+\end{description}\end{quote}
+
 \end{fulllineitems}
 
 \index{Speed (class in lib.data)@\spxentry{Speed}\spxextra{class in lib.data}}
 
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{data:lib.data.Speed}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{lib.data.}}\sphinxbfcode{\sphinxupquote{Speed}}}{\emph{\DUrole{n}{value}\DUrole{p}{:} \DUrole{n}{float}}, \emph{\DUrole{n}{time}\DUrole{p}{:} \DUrole{n}{float}}}{}
-A class to extend the :py:class: \sphinxtitleref{Data \textless{}.Data\textgreater{}}. This class stores velocity values and the
+A class to extend the {\hyperref[\detokenize{data:lib.data.Data}]{\sphinxcrossref{\sphinxcode{\sphinxupquote{Data}}}}}. This class stores velocity values and the
 acceleration can be easily calculated
 \index{acceleration() (lib.data.Speed method)@\spxentry{acceleration()}\spxextra{lib.data.Speed method}}
 
@@ -592,12 +613,7 @@ A method to calculate the acceleration
 the Acceleration
 
 \item[{Return type}] \leavevmode
-\begin{quote}\begin{description}
-\item[{py:class}] \leavevmode
-\sphinxtitleref{Data \textless{}.Data\textgreater{}}
-
-\end{description}\end{quote}
-
+{\hyperref[\detokenize{data:lib.data.Data}]{\sphinxcrossref{Data}}}
 
 \end{description}\end{quote}
 
@@ -610,7 +626,7 @@ the Acceleration
 
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{data:lib.data.Distance}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{lib.data.}}\sphinxbfcode{\sphinxupquote{Distance}}}{\emph{\DUrole{n}{value}\DUrole{p}{:} \DUrole{n}{float}}, \emph{\DUrole{n}{time}\DUrole{p}{:} \DUrole{n}{float}}}{}
-A class to extend the :py:class: \sphinxtitleref{Data \textless{}.Data\textgreater{}}. This class stores distance values and the
+A class to extend the {\hyperref[\detokenize{data:lib.data.Data}]{\sphinxcrossref{\sphinxcode{\sphinxupquote{Data}}}}}. This class stores distance values and the
 velocity can be easily calculated
 \index{velocity() (lib.data.Distance method)@\spxentry{velocity()}\spxextra{lib.data.Distance method}}
 
@@ -625,12 +641,7 @@ A method to calculate the velocity. Returns Speed with value 1 if the times are 
 the speed
 
 \item[{Return type}] \leavevmode
-\begin{quote}\begin{description}
-\item[{py:class}] \leavevmode
-\sphinxtitleref{Speed \textless{}.Speed\textgreater{}}
-
-\end{description}\end{quote}
-
+{\hyperref[\detokenize{data:lib.data.Speed}]{\sphinxcrossref{Speed}}}
 
 \end{description}\end{quote}
 
@@ -643,7 +654,10 @@ the speed
 \index{Simulation Integration@\spxentry{Simulation Integration}}\ignorespaces 
 
 \chapter{Simulation Integration}
-\label{\detokenize{sim_interfaces:simulation-integration}}\label{\detokenize{sim_interfaces:index-0}}\label{\detokenize{sim_interfaces::doc}}\index{SimNoCollide (class in lib.sim\_interfaces)@\spxentry{SimNoCollide}\spxextra{class in lib.sim\_interfaces}}
+\label{\detokenize{sim_interfaces:simulation-integration}}\label{\detokenize{sim_interfaces:index-0}}\label{\detokenize{sim_interfaces::doc}}
+To establish a neatless simulation, the code that is intended to use hardware must be extended/changed to use the simulation’s
+sensors. That’s why simulation classes are needed, to adapt to the challanges of merging different usecases in one API.
+\index{SimNoCollide (class in lib.sim\_interfaces)@\spxentry{SimNoCollide}\spxextra{class in lib.sim\_interfaces}}
 
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{sim_interfaces:lib.sim_interfaces.SimNoCollide}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{lib.sim\_interfaces.}}\sphinxbfcode{\sphinxupquote{SimNoCollide}}}{\emph{\DUrole{n}{hud}}, \emph{\DUrole{o}{*}\DUrole{n}{args}}, \emph{\DUrole{o}{**}\DUrole{n}{kwargs}}}{}

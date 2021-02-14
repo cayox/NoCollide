@@ -2,17 +2,17 @@ from __future__ import annotations
 
 
 class Data:
+    """
+    A class to store a value and its corresponding time. Calculation with ``+``, ``-``, ``*``, ``/`` and all types of
+    comparisons can be applied directly to the class.
+
+    :param value: the value that should be stored
+    :type value: float
+
+    :param time: the corresponding time to the value
+    :type time: float
+    """
     def __init__(self, value: float, time: float):
-        """
-        A class to store a value and its corresponding time. Calculation with +, -, *, / and all types of
-        comparisons can be applied directly to the class.
-
-        :param value: the value that should be stored
-        :type value: float
-
-        :param time: the corresponding time to the value
-        :type time: float
-        """
         self.value = value
         self.time = time
 
@@ -72,7 +72,7 @@ class Data:
 
 class Speed(Data):
     """
-    A class to extend the :py:class: `Data <.Data>`. This class stores velocity values and the
+    A class to extend the :class:`Data <.Data>`. This class stores velocity values and the
     acceleration can be easily calculated
     """
     def __str__(self):
@@ -88,7 +88,7 @@ class Speed(Data):
 
         :param other: the Speed before with which the Acceleration should be calculated
         :return: the Acceleration
-        :rtype: :py:class: `Data <.Data>`
+        :rtype: Data
         """
         delta_t = (self.time - other.time)
         if delta_t == 0:
@@ -98,7 +98,7 @@ class Speed(Data):
 
 class Distance(Data):
     """
-    A class to extend the :py:class: `Data <.Data>`. This class stores distance values and the
+    A class to extend the :class:`Data <.Data>`. This class stores distance values and the
     velocity can be easily calculated
     """
     def __str__(self):
@@ -114,7 +114,7 @@ class Distance(Data):
 
         :param other: the Distance before with which the speed should be calculated
         :return: the speed
-        :rtype: :py:class: `Speed <.Speed>`
+        :rtype: Speed
         """
         try:
             return Speed((other.value - self.value) / (self.time - other.time), self.time)

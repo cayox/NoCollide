@@ -42,7 +42,7 @@
 
   \indexspace
   \bigletter L
-  \item \spxentry{listen()}\spxextra{lib.sim\_interfaces.SimSensor method}, \hyperpage{13}
+  \item \spxentry{listen()}\spxextra{lib.sim\_interfaces.SimSensor method}, \hyperpage{14}
 
   \indexspace
   \bigletter M
@@ -80,7 +80,7 @@
   \item \spxentry{SimSensorGroup}\spxextra{class in lib.sim\_interfaces}, \hyperpage{14}
   \item \spxentry{Simulation Integration}, \hyperpage{11}
   \item \spxentry{Speed}\spxextra{class in lib.data}, \hyperpage{11}
-  \item \spxentry{start()}\spxextra{lib.sensor.SensorGroup method}, \hyperpage{6}
+  \item \spxentry{start()}\spxextra{lib.sensor.SensorGroup method}, \hyperpage{7}
   \item \spxentry{stop()}\spxextra{lib.sim\_interfaces.SimSensor method}, \hyperpage{14}
 
   \indexspace

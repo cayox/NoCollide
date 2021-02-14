@@ -20,7 +20,7 @@
 \indexentry{SensorGroup (class in lib.sensor)@\spxentry{SensorGroup}\spxextra{class in lib.sensor}|hyperpage}{6}
 \indexentry{close() (lib.sensor.SensorGroup method)@\spxentry{close()}\spxextra{lib.sensor.SensorGroup method}|hyperpage}{6}
 \indexentry{set\_mode() (lib.sensor.SensorGroup method)@\spxentry{set\_mode()}\spxextra{lib.sensor.SensorGroup method}|hyperpage}{6}
-\indexentry{start() (lib.sensor.SensorGroup method)@\spxentry{start()}\spxextra{lib.sensor.SensorGroup method}|hyperpage}{6}
+\indexentry{start() (lib.sensor.SensorGroup method)@\spxentry{start()}\spxextra{lib.sensor.SensorGroup method}|hyperpage}{7}
 \indexentry{Driver@\spxentry{Driver}|hyperpage}{7}
 \indexentry{Driver (class in lib.driver)@\spxentry{Driver}\spxextra{class in lib.driver}|hyperpage}{9}
 \indexentry{get\_speed() (lib.driver.Driver method)@\spxentry{get\_speed()}\spxextra{lib.driver.Driver method}|hyperpage}{9}
@@ -49,7 +49,7 @@
 \indexentry{close() (lib.sim\_interfaces.SimSensor method)@\spxentry{close()}\spxextra{lib.sim\_interfaces.SimSensor method}|hyperpage}{13}
 \indexentry{configure() (lib.sim\_interfaces.SimSensor method)@\spxentry{configure()}\spxextra{lib.sim\_interfaces.SimSensor method}|hyperpage}{13}
 \indexentry{destroy() (lib.sim\_interfaces.SimSensor method)@\spxentry{destroy()}\spxextra{lib.sim\_interfaces.SimSensor method}|hyperpage}{13}
-\indexentry{listen() (lib.sim\_interfaces.SimSensor method)@\spxentry{listen()}\spxextra{lib.sim\_interfaces.SimSensor method}|hyperpage}{13}
+\indexentry{listen() (lib.sim\_interfaces.SimSensor method)@\spxentry{listen()}\spxextra{lib.sim\_interfaces.SimSensor method}|hyperpage}{14}
 \indexentry{measure() (lib.sim\_interfaces.SimSensor method)@\spxentry{measure()}\spxextra{lib.sim\_interfaces.SimSensor method}|hyperpage}{14}
 \indexentry{read\_measurements() (lib.sim\_interfaces.SimSensor method)@\spxentry{read\_measurements()}\spxextra{lib.sim\_interfaces.SimSensor method}|hyperpage}{14}
 \indexentry{stop() (lib.sim\_interfaces.SimSensor method)@\spxentry{stop()}\spxextra{lib.sim\_interfaces.SimSensor method}|hyperpage}{14}
