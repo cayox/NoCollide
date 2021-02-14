@@ -45,7 +45,7 @@
 Time-to-Collision</p>
 <dl class="py class">
 <dt id="lib.nocollide.TtcTimes">
-<em class="property">class </em><code class="sig-prename descclassname">lib.nocollide.</code><code class="sig-name descname">TtcTimes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">too_late</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">brake</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">warning</span><span class="p">:</span> <span class="n">float</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.nocollide.TtcTimes" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">lib.nocollide.</code><code class="sig-name descname">TtcTimes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">too_late</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">brake</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">warning</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">reaction_time</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.5</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.nocollide.TtcTimes" title="Permalink to this definition">¶</a></dt>
 <dd><p>A struct like class to enhance readability when storing Time-to-Collision values.
 <code class="docutils literal notranslate"><span class="pre">too_late</span> <span class="pre">&lt;</span> <span class="pre">brake</span> <span class="pre">&lt;</span> <span class="pre">warning</span></code> must be True</p>
 <dl class="field-list simple">
@@ -54,6 +54,7 @@ Time-to-Collision</p>
 <li><p><strong>too_late</strong> (<em>float</em>) – The time after which an accident is unavoidable</p></li>
 <li><p><strong>brake</strong> (<em>float</em>) – The time after which the driver must be braking to avoid an accident</p></li>
 <li><p><strong>warning</strong> (<em>float</em>) – The time after which the driver should be warned</p></li>
+<li><p><strong>reaction_time</strong> (<em>float</em>) – the reaction time that should be added to <code class="docutils literal notranslate"><span class="pre">`brake</span></code> and <code class="docutils literal notranslate"><span class="pre">warning</span></code>. Defaults to 0.5</p></li>
 </ul>
 </dd>
 </dl>
@@ -69,7 +70,7 @@ Time-to-Collision</p>
 <li><p><strong>driver</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Driver</span></code>) – The configuration of the CAN-Bus to initialise</p></li>
 <li><p><strong>sensors</strong> (<a class="reference internal" href="sensor.html#lib.sensor.SensorGroup" title="lib.sensor.SensorGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">SensorGroup</span></code></a>) – The sensor group, on which the calculation should be done</p></li>
 <li><p><strong>ttc_times</strong> (Union[<a class="reference internal" href="#lib.nocollide.TtcTimes" title="lib.nocollide.TtcTimes"><code class="xref py py-class docutils literal notranslate"><span class="pre">TtcTimes</span></code></a>, None]) – The times which define when to warn based on the TTC (Time-to-collision). If None, the default
-TTC-Times will be used: <code class="docutils literal notranslate"><span class="pre">TtcTimes(too_late=0.6,</span> <span class="pre">brake=1.6,</span> <span class="pre">warning=3.0)</span></code></p></li>
+TTC-Times will be used: <code class="docutils literal notranslate"><span class="pre">TtcTimes(too_late=0.6,</span> <span class="pre">brake=1.6,</span> <span class="pre">warning=2.6)</span></code></p></li>
 </ul>
 </dd>
 </dl>

@@ -25,14 +25,16 @@ class TtcTimes:
     :type brake: float
     :param warning: The time after which the driver should be warned
     :type warning: float
+    :param reaction_time: the reaction time that should be added to ```brake`` and ``warning``. Defaults to 0.5
+    :type reaction_time: float
     """
-    def __init__(self, too_late: float, brake: float, warning: float):
+    def __init__(self, too_late: float, brake: float, warning: float, reaction_time: float = 0.5):
         if not too_late < brake < warning:
             raise ValueError("too_late < brake < warning not true")
 
         self.too_late = too_late
-        self.brake = brake
-        self.warning = warning
+        self.brake = brake + reaction_time
+        self.warning = warning + reaction_time
 
 
 class NoCollide(NoCollideInterface):
@@ -46,7 +48,7 @@ class NoCollide(NoCollideInterface):
     :type sensors: :py:class:`SensorGroup <.sensor.SensorGroup>`
 
     :param ttc_times: The times which define when to warn based on the TTC (Time-to-collision). If None, the default
-     TTC-Times will be used: ``TtcTimes(too_late=0.6, brake=1.6, warning=3.0)``
+     TTC-Times will be used: ``TtcTimes(too_late=0.6, brake=1.6, warning=2.6)``
     :type ttc_times: Union[:py:class:`TtcTimes <.TtcTimes>`, None]
     """
     def __init__(self, driver: Driver, sensors: SensorGroup, ttc_times: Union[TtcTimes, None] = None):
@@ -55,7 +57,7 @@ class NoCollide(NoCollideInterface):
         self.sensors = sensors
 
         if ttc_times is None:
-            self.ttc_times = TtcTimes(0.6, 1.6, 3.0)
+            self.ttc_times = TtcTimes(0.6, 1.6, 2.6)
         else:
             self.ttc_times = ttc_times
 

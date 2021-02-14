@@ -102,7 +102,7 @@ Time\sphinxhyphen{}to\sphinxhyphen{}Collision
 \index{TtcTimes (class in lib.nocollide)@\spxentry{TtcTimes}\spxextra{class in lib.nocollide}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{no_collide:lib.nocollide.TtcTimes}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{lib.nocollide.}}\sphinxbfcode{\sphinxupquote{TtcTimes}}}{\emph{\DUrole{n}{too\_late}\DUrole{p}{:} \DUrole{n}{float}}, \emph{\DUrole{n}{brake}\DUrole{p}{:} \DUrole{n}{float}}, \emph{\DUrole{n}{warning}\DUrole{p}{:} \DUrole{n}{float}}}{}
+\phantomsection\label{\detokenize{no_collide:lib.nocollide.TtcTimes}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{lib.nocollide.}}\sphinxbfcode{\sphinxupquote{TtcTimes}}}{\emph{\DUrole{n}{too\_late}\DUrole{p}{:} \DUrole{n}{float}}, \emph{\DUrole{n}{brake}\DUrole{p}{:} \DUrole{n}{float}}, \emph{\DUrole{n}{warning}\DUrole{p}{:} \DUrole{n}{float}}, \emph{\DUrole{n}{reaction\_time}\DUrole{p}{:} \DUrole{n}{float} \DUrole{o}{=} \DUrole{default_value}{0.5}}}{}
 A struct like class to enhance readability when storing Time\sphinxhyphen{}to\sphinxhyphen{}Collision values.
 \sphinxcode{\sphinxupquote{too\_late \textless{} brake \textless{} warning}} must be True
 \begin{quote}\begin{description}
@@ -115,6 +115,9 @@ A struct like class to enhance readability when storing Time\sphinxhyphen{}to\sp
 
 \item {} 
 \sphinxstyleliteralstrong{\sphinxupquote{warning}} (\sphinxstyleliteralemphasis{\sphinxupquote{float}}) \textendash{} The time after which the driver should be warned
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{reaction\_time}} (\sphinxstyleliteralemphasis{\sphinxupquote{float}}) \textendash{} the reaction time that should be added to \sphinxcode{\sphinxupquote{\textasciigrave{}brake}} and \sphinxcode{\sphinxupquote{warning}}. Defaults to 0.5
 
 \end{itemize}
 
@@ -137,7 +140,7 @@ The class that calculates the acc and regulates the warning.
 
 \item {} 
 \sphinxstyleliteralstrong{\sphinxupquote{ttc\_times}} (Union{[}{\hyperref[\detokenize{no_collide:lib.nocollide.TtcTimes}]{\sphinxcrossref{\sphinxcode{\sphinxupquote{TtcTimes}}}}}, None{]}) \textendash{} The times which define when to warn based on the TTC (Time\sphinxhyphen{}to\sphinxhyphen{}collision). If None, the default
-TTC\sphinxhyphen{}Times will be used: \sphinxcode{\sphinxupquote{TtcTimes(too\_late=0.6, brake=1.6, warning=3.0)}}
+TTC\sphinxhyphen{}Times will be used: \sphinxcode{\sphinxupquote{TtcTimes(too\_late=0.6, brake=1.6, warning=2.6)}}
 
 \end{itemize}
 
